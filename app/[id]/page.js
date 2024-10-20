@@ -5,8 +5,6 @@ import Image from "next/image";
 import { MdEmail } from "react-icons/md";
 import { FaBriefcase, FaFacebook, FaPhoneAlt, FaViber } from "react-icons/fa";
 import { CiGlobe } from "react-icons/ci";
-import { saveAs } from "file-saver";
-import vCard from "vcards-js";
 
 const data = [
   {
@@ -39,25 +37,35 @@ const Page = ({ params }) => {
   const generateVCard = () => {
     if (!user) return;
 
-    const vcf = vCard();
+    // Manually construct the vCard string
+    const vCardData = `
+      BEGIN:VCARD
+      VERSION:3.0
+      FN:${user.name}
+      ORG:REMAX/DIAMOND
+      TITLE:${user.position}
+      TEL;TYPE=WORK,VOICE:${user.workNumber}
+      TEL;TYPE=CELL:${user.phone}
+      EMAIL;TYPE=PREF,INTERNET:${user.email}
+      URL:${user.web}
+      END:VCARD
+    `;
 
-    // Add user details to the vCard
-    vcf.firstName = user.name;
-    vcf.organization = "REMAX/DIAMOND";
-    vcf.title = user.position;
-    vcf.workPhone = user.workNumber;
-    vcf.cellPhone = user.phone;
-    vcf.email = user.email;
-    vcf.url = user.web;
+    // Encode the vCard data as a URI
+    const encodedData = encodeURIComponent(vCardData.trim());
+    const vCardUrl = `data:text/vcard;charset=utf-8,${encodedData}`;
 
-    // Generate vCard string
-    const vCardString = vcf.getFormattedString();
+    // Create a temporary anchor element and trigger the download
+    const downloadLink = document.createElement("a");
+    downloadLink.href = vCardUrl;
+    downloadLink.download = `${user.name}.vcf`;
 
-    // Create a blob for the vCard
-    const blob = new Blob([vCardString], { type: "text/vcard" });
+    // Append the anchor to the body and trigger a click to download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
 
-    // Use FileSaver to download the file
-    saveAs(blob, `${user.name}.vcf`);
+    // Clean up by removing the link
+    downloadLink.remove();
   };
 
   return (
