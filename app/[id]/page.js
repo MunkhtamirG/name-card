@@ -51,8 +51,24 @@ const Page = ({ params }) => {
       END:VCARD
     `;
 
+    // Create a blob from the vCard data
     const blob = new Blob([vCardData], { type: "text/vcard" });
-    saveAs(blob, `${user.name}.vcf`);
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link element
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${user.name}.vcf`;
+
+    // Append link to the document and trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up by revoking the object URL and removing the link
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      link.remove();
+    }, 100);
   };
 
   return (
