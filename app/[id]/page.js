@@ -36,15 +36,21 @@ const Page = ({ params }) => {
   const user = data.find((e) => e.id === params.id) || null;
 
   const generateVCard = () => {
+    if (!user) return;
+
     const vCardData = `
       BEGIN:VCARD
       VERSION:3.0
       FN:${user.name}
-      TEL;TYPE=WORK,VOICE:${user.phone}
+      ORG:REMAX/DIAMOND
+      TITLE:${user.position}
+      TEL;TYPE=WORK,VOICE:${user.workNumber}
+      TEL;TYPE=CELL:${user.phone}
       EMAIL;TYPE=PREF,INTERNET:${user.email}
       URL:${user.web}
       END:VCARD
     `;
+
     const blob = new Blob([vCardData], { type: "text/vcard" });
     saveAs(blob, `${user.name}.vcf`);
   };
