@@ -6,6 +6,7 @@ import { MdEmail } from "react-icons/md";
 import { FaBriefcase, FaFacebook, FaPhoneAlt, FaViber } from "react-icons/fa";
 import { CiGlobe } from "react-icons/ci";
 import { saveAs } from "file-saver";
+import vCard from "vcards-js";
 
 const data = [
   {
@@ -38,21 +39,22 @@ const Page = ({ params }) => {
   const generateVCard = () => {
     if (!user) return;
 
-    const vCardData = `
-      BEGIN:VCARD
-      VERSION:3.0
-      FN:${user.name}
-      ORG:REMAX/DIAMOND
-      TITLE:${user.position}
-      TEL;TYPE=WORK,VOICE:${user.workNumber}
-      TEL;TYPE=CELL:${user.phone}
-      EMAIL;TYPE=PREF,INTERNET:${user.email}
-      URL:${user.web}
-      END:VCARD
-    `;
+    const vcf = vCard();
 
-    // Create a blob from the vCard data
-    const blob = new Blob([vCardData], { type: "text/vcard" });
+    // Add user details to the vCard
+    vcf.firstName = user.name;
+    vcf.organization = "REMAX/DIAMOND";
+    vcf.title = user.position;
+    vcf.workPhone = user.workNumber;
+    vcf.cellPhone = user.phone;
+    vcf.email = user.email;
+    vcf.url = user.web;
+
+    // Generate vCard string
+    const vCardString = vcf.getFormattedString();
+
+    // Create a blob for the vCard
+    const blob = new Blob([vCardString], { type: "text/vcard" });
 
     // Use FileSaver to download the file
     saveAs(blob, `${user.name}.vcf`);
