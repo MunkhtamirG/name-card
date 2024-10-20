@@ -47,7 +47,6 @@ const Page = ({ params }) => {
 BEGIN:VCARD
 VERSION:3.0
 FN:${user.name}
-ORG:REMAX/DIAMOND
 PHOTO;TYPE=JPEG;VALUE=URI:${window.location.origin}${user.photo}
 TEL;TYPE=WORK,VOICE:${user.workNumber}
 TEL;TYPE=CELL,VOICE:${user.phone}
