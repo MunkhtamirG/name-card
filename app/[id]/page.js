@@ -1,10 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MdEmail } from "react-icons/md";
-import { FaBriefcase, FaFacebook, FaPhoneAlt, FaViber } from "react-icons/fa";
-import { CiGlobe } from "react-icons/ci";
+import {
+  FaBriefcase,
+  FaFacebook,
+  FaPhoneAlt,
+  FaViber,
+  FaGlobe,
+} from "react-icons/fa";
 
 const data = [
   {
@@ -33,52 +38,48 @@ const data = [
 
 const Page = ({ params }) => {
   const user = data.find((e) => e.id === params.id) || null;
+  const [downloadLink, setDownloadLink] = useState("");
 
   const generateVCard = () => {
     if (!user) return;
 
-    // Manually construct the vCard string
     const vCardData = `
-      BEGIN:VCARD
-      VERSION:3.0
-      FN:${user.name}
-      ORG:REMAX/DIAMOND
-      TITLE:${user.position}
-      TEL;TYPE=WORK,VOICE:${user.workNumber}
-      TEL;TYPE=CELL:${user.phone}
-      EMAIL;TYPE=PREF,INTERNET:${user.email}
-      URL:${user.web}
-      END:VCARD
-    `;
+BEGIN:VCARD
+VERSION:3.0
+FN:${user.name}
+ORG:REMAX/DIAMOND
+PHOTO;TYPE=JPEG;VALUE=URI:${window.location.origin}${user.photo}
+TEL;TYPE=WORK,VOICE:${user.workNumber}
+TEL;TYPE=CELL,VOICE:${user.phone}
+EMAIL:${user.email}
+URL:${user.web}
+END:VCARD
+    `.trim();
 
-    // Encode the vCard data as a URI
-    const encodedData = encodeURIComponent(vCardData.trim());
-    const vCardUrl = `data:text/vcard;charset=utf-8,${encodedData}`;
+    const blob = new Blob([vCardData], { type: "text/vcard" });
+    const url = URL.createObjectURL(blob);
 
-    // Create a temporary anchor element and trigger the download
-    const downloadLink = document.createElement("a");
-    downloadLink.href = vCardUrl;
-    downloadLink.download = `${user.name}.vcf`;
+    // Try to trigger the download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${user.name}.vcf`;
+    a.click();
 
-    // Append the anchor to the body and trigger a click to download
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-
-    // Clean up by removing the link
-    downloadLink.remove();
+    // Fallback: Display the download link
+    setDownloadLink(url);
   };
 
   return (
-    <div className="bg h-screen p-8">
+    <div className="bg h-screen p-8 flex justify-center items-center">
       {user ? (
-        <div className="max-w-[425px] mx-auto">
+        <div className="max-w-[425px]">
           <Image
             src={user.photo}
             alt={user.name}
-            width={100}
-            height={100}
+            width={120}
+            height={120}
             priority={true}
-            className="rounded-full border m-auto border-gray-300"
+            className="rounded-full border mx-auto border-gray-400"
           />
           <div className="text-2xl font-bold">{user.name}</div>
           <div>{user.position}</div>
@@ -104,7 +105,7 @@ const Page = ({ params }) => {
             </a>
           </div>
 
-          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800">
+          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800 ">
             <a
               href={`tel:${user.workNumber}`}
               className="flex items-center gap-4"
@@ -119,7 +120,7 @@ const Page = ({ params }) => {
             </a>
           </div>
 
-          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800">
+          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800 ">
             <a
               href={`mailto:${user.email}`}
               className="flex items-center gap-4"
@@ -129,24 +130,36 @@ const Page = ({ params }) => {
             </a>
           </div>
 
-          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800">
+          <div className="bg-gray-300 rounded-lg p-4 mt-4 text-gray-800 ">
             <a
               href={user.web}
               target="_blank"
               className="flex items-center gap-4"
               rel="noopener noreferrer"
             >
-              <CiGlobe />
+              <FaGlobe />
               <div>{user.web}</div>
             </a>
           </div>
 
           <button
             onClick={generateVCard}
-            className="bg-[#003da5] rounded w-full mt-4 py-2"
+            className="bg-[#003da5] rounded w-full mt-4 py-2 font-bold text-white"
           >
             Хадгалах
           </button>
+
+          {downloadLink && (
+            <div className="mt-4">
+              <a
+                href={downloadLink}
+                download={`${user.name}.vcf`}
+                className="text-blue-500 underline"
+              >
+                Click here to download your vCard
+              </a>
+            </div>
+          )}
         </div>
       ) : (
         <div>User not found</div>
