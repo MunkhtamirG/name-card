@@ -38,43 +38,32 @@ const data = [
 
 const Page = ({ params }) => {
   const user = data.find((e) => e.id === params.id) || null;
-  const [downloadLink, setDownloadLink] = useState("");
 
-  const generateVCard = async () => {
+  const generateVCard = () => {
     if (!user) return;
 
-    // Fetch the image as a Blob
-    const response = await fetch(`${window.location.origin}${user.photo}`);
-    const imageBlob = await response.blob();
+    const vCardData = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${user.name}
+PHOTO;TYPE=JPEG;VALUE=URI:${window.location.origin}${user.photo}
+TEL;TYPE=WORK,VOICE:${user.workNumber}
+TEL;TYPE=CELL,VOICE:${user.phone}
+EMAIL:${user.email}
+URL:${user.web}
+END:VCARD
+    `.trim();
 
-    // Convert the Blob to a base64 string
-    const reader = new FileReader();
-    reader.readAsDataURL(imageBlob);
-    reader.onloadend = () => {
-      const base64data = reader.result.split(",")[1];
+    const blob = new Blob([vCardData], { type: "text/vcard" });
+    const url = URL.createObjectURL(blob);
 
-      const vCardData = `
-  BEGIN:VCARD
-  VERSION:3.0
-  FN:${user.name}
-  PHOTO;ENCODING=b;TYPE=JPEG:${base64data}
-  TEL;TYPE=WORK,VOICE:${user.workNumber}
-  TEL;TYPE=CELL,VOICE:${user.phone}
-  EMAIL:${user.email}
-  URL:${user.web}
-  END:VCARD
-      `.trim();
-
-      const blob = new Blob([vCardData], { type: "text/vcard" });
-      const url = URL.createObjectURL(blob);
-
-      // Try to trigger the download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${user.name}.vcf`;
-      a.click();
-    };
+    // Try to trigger the download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${user.name}.vcf`;
+    a.click();
   };
+
   return (
     <div className="bg h-screen p-8 flex justify-center items-center">
       {user ? (
