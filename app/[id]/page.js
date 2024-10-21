@@ -13,7 +13,7 @@ import {
 
 const data = [
   {
-    id: "1",
+    id: "odmaa",
     name: "Х.Одмаа",
     photo: "/IMG_0324.JPG",
     position: "Админ",
@@ -24,7 +24,7 @@ const data = [
     email: "info.diamond@remax.mn",
   },
   {
-    id: "2",
+    id: "odontuya",
     name: "Д.Одонтуяа",
     photo: "/IMG_0317.JPG",
     position: "Агент",
@@ -35,7 +35,7 @@ const data = [
     email: "odontuya.da@remax.mn",
   },
   {
-    id: "3",
+    id: "tamir",
     name: "М.Тамир",
     photo: "/IMG_0318.JPG",
     position: "Силвер агент",
@@ -47,7 +47,7 @@ const data = [
     second: "Борлуулалт хариуцсан захирал",
   },
   {
-    id: "4",
+    id: "azzaya",
     name: "Л.Аззаяа",
     photo: "/IMG_0316 2.JPG",
     position: "Агент",
@@ -58,7 +58,7 @@ const data = [
     email: "azzaya.l@remax.mn",
   },
   {
-    id: "5",
+    id: "munkhzul",
     name: "Ч.Мөнхзул",
     photo: "/IMG_0315.JPG",
     position: "Агент",
