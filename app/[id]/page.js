@@ -40,34 +40,41 @@ const Page = ({ params }) => {
   const user = data.find((e) => e.id === params.id) || null;
   const [downloadLink, setDownloadLink] = useState("");
 
-  const generateVCard = () => {
+  const generateVCard = async () => {
     if (!user) return;
 
-    const vCardData = `
-BEGIN:VCARD
-VERSION:3.0
-FN:${user.name}
-PHOTO;TYPE=JPEG;VALUE=URI:${window.location.origin}${user.photo}
-TEL;TYPE=WORK,VOICE:${user.workNumber}
-TEL;TYPE=CELL,VOICE:${user.phone}
-EMAIL:${user.email}
-URL:${user.web}
-END:VCARD
-    `.trim();
+    // Fetch the image as a Blob
+    const response = await fetch(`${window.location.origin}${user.photo}`);
+    const imageBlob = await response.blob();
 
-    const blob = new Blob([vCardData], { type: "text/vcard" });
-    const url = URL.createObjectURL(blob);
+    // Convert the Blob to a base64 string
+    const reader = new FileReader();
+    reader.readAsDataURL(imageBlob);
+    reader.onloadend = () => {
+      const base64data = reader.result.split(",")[1];
 
-    // Try to trigger the download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${user.name}.vcf`;
-    a.click();
+      const vCardData = `
+  BEGIN:VCARD
+  VERSION:3.0
+  FN:${user.name}
+  PHOTO;ENCODING=b;TYPE=JPEG:${base64data}
+  TEL;TYPE=WORK,VOICE:${user.workNumber}
+  TEL;TYPE=CELL,VOICE:${user.phone}
+  EMAIL:${user.email}
+  URL:${user.web}
+  END:VCARD
+      `.trim();
 
-    // Fallback: Display the download link
-    setDownloadLink(url);
+      const blob = new Blob([vCardData], { type: "text/vcard" });
+      const url = URL.createObjectURL(blob);
+
+      // Try to trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${user.name}.vcf`;
+      a.click();
+    };
   };
-
   return (
     <div className="bg h-screen p-8 flex justify-center items-center">
       {user ? (
@@ -147,18 +154,6 @@ END:VCARD
           >
             Хадгалах
           </button>
-
-          {downloadLink && (
-            <div className="mt-4">
-              <a
-                href={downloadLink}
-                download={`${user.name}.vcf`}
-                className="text-blue-500 underline"
-              >
-                Click here to download your vCard
-              </a>
-            </div>
-          )}
         </div>
       ) : (
         <div>User not found</div>
