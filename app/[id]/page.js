@@ -25,14 +25,48 @@ const data = [
   },
   {
     id: "2",
-    name: "Х.ASDASDAS",
-    photo: "/download.jpeg",
-    position: "Agent",
-    phone: "+976 123123123",
-    workNumber: "+123123123",
+    name: "Д.Одонтуяа",
+    photo: "/IMG_0317.JPG",
+    position: "Агент",
+    phone: "+976 95931575",
+    workNumber: "+976 77327711",
     web: "https://www.remax.mn/diamond",
-    facebook: "https://www.facebook.com/remaxdiamond.mn",
-    email: "info.diamond@remax.mn",
+    facebook: "https://www.facebook.com/profile.php?id=61552809536526",
+    email: "odontuya.da@remax.mn",
+  },
+  {
+    id: "3",
+    name: "М.Тамир",
+    photo: "/IMG_0318.JPG",
+    position: "Силвер агент",
+    phone: "+976 95563773",
+    workNumber: "+976 77327711",
+    web: "https://www.remax.mn/diamond",
+    facebook: "https://www.facebook.com/profile.php?id=61565561953663",
+    email: "tamir.m@remax.mn",
+    second: "Борлуулалт хариуцсан захирал",
+  },
+  {
+    id: "4",
+    name: "Л.Аззаяа",
+    photo: "/IMG_0316 2.JPG",
+    position: "Агент",
+    phone: "+976 90322379",
+    workNumber: "+976 77327711",
+    web: "https://www.remax.mn/diamond",
+    facebook: "https://www.facebook.com/profile.php?id=61557408764228",
+    email: "azzaya.l@remax.mn",
+  },
+  {
+    id: "5",
+    name: "Ч.Мөнхзул",
+    photo: "/IMG_0315.JPG",
+    position: "Агент",
+    phone: "+976 90322379",
+    workNumber: "+976 77327711",
+    web: "https://www.remax.mn/diamond",
+    facebook: "https://www.facebook.com/profile.php?id=61558756421546",
+    email: "munkhzul.chi@remax.mn",
   },
 ];
 
@@ -74,10 +108,11 @@ END:VCARD
             width={120}
             height={120}
             priority={true}
-            className="rounded-full border mx-auto border-gray-400"
+            className="rounded-full border mx-auto border-gray-400 object-cover max-h-[120px]"
           />
           <div className="text-2xl font-bold">{user.name}</div>
           <div>{user.position}</div>
+          {user.second && <div>{user.second}</div>}
           <div className="text-gray-400 text-sm">REMAX/DIAMOND</div>
 
           <div className="flex justify-center gap-4 items-center mt-4">
