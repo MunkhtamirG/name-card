@@ -49,7 +49,7 @@ const data = [
   {
     id: "azzaya",
     name: "Л.Аззаяа",
-    photo: "/IMG_0316.JPG",
+    photo: "/IMG_0316.jpg",
     position: "Агент",
     phone: "+976 90322379",
     workNumber: "+976 77327711",
