@@ -24,7 +24,7 @@ const data = [
     email: "info.diamond@remax.mn",
   },
   {
-    id: " ",
+    id: "odontuya",
     name: "Д.Одонтуяа",
     photo: "/IMG_0317.JPG",
     position: "Агент",
