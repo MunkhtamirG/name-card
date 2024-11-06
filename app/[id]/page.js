@@ -62,11 +62,11 @@ const data = [
     name: "Ч.Мөнхзул",
     photo: "/IMG_0315.JPG",
     position: "Агент",
-    phone: "+976 90322379",
+    phone: "+976 88111724",
     workNumber: "+976 77327711",
     web: "https://www.remax.mn/diamond",
     facebook: "https://www.facebook.com/profile.php?id=61558756421546",
-    email: "munkhzul.chi@remax.mn",
+    email: "munkhzull.chi@remax.mn",
   },
 ];
 
