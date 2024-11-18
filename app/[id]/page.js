@@ -110,10 +110,10 @@ END:VCARD
             priority={true}
             className="rounded-full border mx-auto border-gray-400 object-cover max-h-[120px]"
           />
-          <div className="text-2xl font-bold">{user.name}</div>
-          <div>{user.position}</div>
+          <div className="text-2xl font-bold text-white">{user.name}</div>
+          <div className="text-white">{user.position}</div>
           {user.second && <div>{user.second}</div>}
-          <div className="text-gray-400 text-sm">REMAX/DIAMOND</div>
+          <div className="text-gray-400 text-sm">RE/MAX DIAMOND</div>
 
           <div className="flex justify-center gap-4 items-center mt-4">
             <a href={`tel:${user.phone}`} className="bg-[#e60e16] p-2 rounded">
